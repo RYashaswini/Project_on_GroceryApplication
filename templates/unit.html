@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container pt-5" style="margin-top:70 ;">
+    <div class="row">
+
+    </div>
+</div>
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-success text-center" role="alert">
+    {{ message }}</div>
+{% endfor %}
+{% endif %}
+
+<div class="container pt-5" style="margin-top:70 ;">
+    <form name="formCreateUnit" class="needs-validation" id="formOrderID" method="POST"
+    action="{% url 'create_unit' %}"  >
+    {% csrf_token %}
+    <div class="container p-5 my-5   text-white">
+        <div class="row">
+            <div class="col-4">
+                <h5 style="color:wheat"><ins><b>Enter Unit Name:</b></ins></h5>
+                <input type="text" class="form-control" id="txtUnitName" name="txtUnitName">
+                </select>
+            </div>
+            <div class="col-4">
+                <br>
+                <button class="btn btn-primary" id="btnUnitSave" type="submit" onclick="return validateUnit()">Save</button>
+                <a href='{% url "create_unit" %}' class="btn btn-primary" type="button">Cancel</button></a>
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+<div class="container pt-5">
+
+    <table class="table table-bordered text-black table-success table-hover table-striped">
+        <thead class="table table-bordered text-white table-dark  ">
+            <tr>
+                <th>S.No</th>
+                <th>Unit Name</th>
+                <th colspan="2">Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for orderdata in unit_data %}
+            <tr>
+                <td style="text-align:center">{{forloop.counter}}</td>
+                <td style="text-align:center">{{orderdata.unit_name}}</td>
+                <td style="text-align:center"><a class="btn btn-success"
+                    onclick="EditUnitDetails('{{orderdata.unit_id}}')">Edit</a>
+                </td>
+
+               <td style="text-align:center"><a class="btn btn-danger"
+                       href="{% url 'deleteunit' orderdata.unit_id %}"
+                       onclick="return confirm('Are you sure, you delete {{orderdata.unit_id}} data?')">Delete</a>
+               </td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+
+
+</div>
+{% endblock %}

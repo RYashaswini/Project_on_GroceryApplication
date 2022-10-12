@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container pt-5" style="margin-top:70 ;">
+    <div class="row">
+
+    </div>
+</div>
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-success text-center" role="alert">
+    {{ message }}</div>
+{% endfor %}
+{% endif %}
+
+<div class="container pt-5" style="margin-top:70 ;">
+<form name="formCreateCustomer" class="needs-validation" id="formOrderID" method="POST"
+    action="{% url 'create_customer' %}">
+    {% csrf_token %}
+    <div class="container p-5 my-5  text-white">
+        <div class="row">
+            <div class="col-4">
+                <h5 style="color:wheat"><ins><b>Enter Customer Name:</b></ins></h5>
+                <input type="text" class="form-control" id="txtCustName" name="txtCustName">
+                </select>
+            </div>
+            <div class="col-4">
+                <h5 style="color:wheat"><ins><b>Enter Customer Phno:</b></ins></h5>
+                <input type="text" class="form-control" id="txtPhNo" name="txtPhNo">
+                </select>
+            </div>
+            <div class="col-4">
+                <h5 style="color:wheat"><ins><b>Enter Customer City:</b></ins></h5>
+                <input type="text" class="form-control" id="txtCustCity" name="txtCustCity">
+                </select>
+            </div>
+            <div class="col-4">
+                <br>
+                <button class="btn btn-primary" id="btnCustomerSave" type="submit">Save</button>
+                <a href='{% url "details" %}' class="btn btn-primary" type="button">Cancel</button></a>
+            </div>
+        </div>
+    </div>
+</form>
+<form name="formCreateUnit" class="needs-validation" id="formCreateUnitID" method="POST"
+    action="{% url 'create_unit' %}">
+    {% csrf_token %}
+    <div class="container p-5 my-5   text-white">
+        <div class="row">
+            <div class="col-4">
+                <h5 style="color:wheat"><ins><b>Enter Unit Name:</b></ins></h5>
+                <input type="text" class="form-control" id="txtUnitName" name="txtUnitName">
+                </select>
+            </div>
+            <div class="col-4">
+                <br>
+                <button class="btn btn-primary" id="btnUnitSave" type="submit">Save</button>
+                <a href='{% url "details" %}' class="btn btn-primary" type="button">Cancel</button></a>
+            </div>
+        </div>
+    </div>
+</form>
+<form name="formCreateProduct" class="needs-validation" id="formCreateProductID" method="POST"
+    action="{% url 'create_product' %}">
+    {% csrf_token %}
+    <div class="container p-5 my-5  text-white">
+        <div class="row">
+            <div class="col-4">
+                <h5 style="color:wheat"><ins><b>Enter Product Name:</b></ins></h5>
+                <input type="text" class="form-control" id="txtProName" name="txtProName">
+            </div>
+            
+            <div class="col-4">
+                <h5 style="color:wheat"><ins><b>Enter Unit Name:</b></ins></h5>
+                <select class="form-select" id="ddlUnitName" name="ddlUnitName">
+                    <option value="0" selected="selected">Select Unit name </option>
+                    {% for unit in unit_data %}
+                    <option value="{{ unit.unit_id }}">{{ unit.unit_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-4">
+                <h5 style="color:wheat"><ins><b>Enter Product price:</b></ins></h5>        
+                <input type="text" class="form-control" id="txtProPrice" name="txtProPrice">
+            </div>
+            <div class="col-4">
+                <br>
+               
+                <button class="btn btn-primary" id="btnProductSave" type="submit">Save</button>
+                <a href='{% url "details" %}' class="btn btn-primary" type="button">Cancel</button></a>
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+
+{% endblock %}

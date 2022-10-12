@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+
+
+<div class="container pt-5" style="margin-top:70 ;">
+    <div class="row">
+        <h1 style="color: white; text-align:center; ">ORDER DETAILS</h1>
+    </div>
+</div>
+
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == 'error'%}
+<div class='alert alert-danger'>
+    {{message}}
+</div>
+{% else %}
+<div class='alert alert-{{message.tags}}'>
+    {{message}}
+</div>
+{% endif %}
+{%endfor%}
+{% endif %}
+
+{% if if_value %}
+<form method="POST" action="{% url 'update_order' order_list.order_id %}" enctype="multipart/form-data"
+    onsubmit="return validateForm()" name="myform">
+    {% else %}
+    <form method="POST" action="{% url 'create_order_details' %}" enctype="multipart/form-data"
+        onsubmit="return validateForm()" name="myform">
+        {%endif%}
+        {% csrf_token %}
+
+        <div class="row justify-content-between pt-5">
+            <h5 style="color: white ;"><ins><b>Customer Name</b></ins></h5>
+            <div class="col-sm-4 me-auto">
+                {% if if_value %}
+                <select class="form-select" id="ddlCustomer" name="ddlCustomer">
+                    {% for name in order_list.customer%}
+                    <option value="{{ name.cust_id }}">{{ name.customer_name }}</option>
+                    {%endfor%}
+                </select>
+                {% else %}
+                <select class="form-select" id="ddlCustomer" name="ddlCustomer">
+                    <option value="0" selected="selected">Select Customer name </option>
+                    {% for choice in customerdata %}
+                    <option value="{{ choice.cust_id }}">{{ choice.customer_name }}</option>
+                    {% endfor %}
+                </select>
+                {% endif %}
+            </div>
+            <div class="col-sm-2">
+
+                {% if if_value %}
+                <input type="text" class="form-control" name="txtOrderDate" value="{{order_list.order_date}}" readonly>
+                {% else %}
+                <input type="text" class="form-control" id="txtOrderDate" name="txtOrderDate" readonly>
+                {% endif %}
+            </div>
+        </div>
+
+        <br>
+        <div class="form-group row">
+            <input type="hidden" id="hiddenArray" name="hiddenArray">
+            <h5 style="color: white ;"><ins><b>Order Number</b></ins></h5>     
+            <div class="col-sm-2">
+                {% if if_value %}
+                <input type="text" class="form-control" name="txtOrderNo" value="{{order_list.order_no}}" readonly>
+                {% else %}
+                <input type="text" class="form-control" id="txtOrderNo" name="txtOrderNo" readonly>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="container mt-5 pt-5">
+            <div class="row">
+
+                <div class="col">
+                    
+                    <h5 style="color: wheat ;"><ins><b>Product Name</b></ins></h5>
+
+                    <select class="form-select" id="ddlProdName" name="ddlProdName">
+                        <option value="0" selected="selected">Select Product name </option>
+                        {% for choice in productdata %}
+                        <option value="{{ choice.prod_id }}">{{ choice.product_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col">
+                    <h5 style="color:wheat; "><ins><b>Unit</b></ins></h5>
+                    <input type="text" class="form-control" id="txtUnit" name="txtUnit" readonly>
+                    </select>
+                </div>
+                <div class="col">
+                    <h5 style="color:wheat; "><ins><b>Price</b></ins></h5>
+                    <input type="text" class="form-control" id="txtPrice" name="txtPrice" readonly>
+                </div>
+                <div class="col">
+                    <h5 style="color:wheat"><ins><b>Quantity</b></ins></h5>
+                    <input type="text" class="form-control" id="txtQuantity" name="txtQuantity">
+                </div>
+                <div class="col">
+                    <h5 style="color:wheat"><ins><b>Amount</b></ins></h5>
+                    <input type="text" class="form-control" id="txtAmount" name="txtAmount">
+                </div>
+                <div class="col mt-4 pb-2">
+
+                    <button type="button" id="add-button-1" class="btn btn-success"
+                        onclick="validateAddProduct()">Add</button>
+                    <button type="button" id="update-button-1" class="btn btn-success"
+                        onclick="updateOrders()">Update</button>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="container mt-5 pt-5">
+            <label id="updateRow" style="display: none"></label>
+            <table class="table table-bordered text-black table-success  table-hover table-striped"
+                id="tableOrderDetails">
+                <thead>
+                    <tr>
+                        <th scope="col">S.No</th>
+                        <th style="text-align:center">Product name</th>
+                        <th>Unit</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Amount</th>
+                        <th colspan="2">Action</th>
+                    </tr>
+                </thead>
+                {% if if_value %}
+                <tbody>
+                    {% for keys in order_list.details %}
+
+                    <tr style="text-align:center" id='rowData-{{ forloop.counter }}{{endfor}}'>
+                        <td id='row-{{ forloop.counter }}{{endfor}}'>{{ forloop.counter }}{{endfor}}</td>
+
+                        <td role="{{keys.prod_id_id}}" id='rowproductValue-{{ forloop.counter }}{{endfor}}'></td>
+
+                        <input type="hidden" id="productValue-{{ forloop.counter }}{{endfor}}" value="{{keys.prod_id_id}}">
+                        <input type="hidden" id="hiddenloopcounter-{{ forloop.counter }}" value="{{ forloop.counter }}{{endfor}}">
+
+                        <td id="rowUnit-{{ forloop.counter }}{{endfor}}">{{keys.unit_ordered}}</td>
+                        <td id='rowPrice-{{ forloop.counter }}{{endfor}}'>{{keys.price_ordered}}</td>
+                        <td id='rowQuantity-{{ forloop.counter }}{{endfor}}'>{{keys.quantity_ordered}}</td>
+                        <td id='rowAmount-{{ forloop.counter }}{{endfor}}'>{{keys.total_amount_ordered}}
+                        </td>
+                        <td>
+                            <input type="button" class="btn btn-success"
+                                onclick="editRow('{{ forloop.counter }}{{endfor}}','{{ keys.prod_id_id}}')"
+                                value="Edit">
+
+                        </td>
+                        <td><input type="button" class="btn btn-danger"
+                                onclick="deleteRow('{{ forloop.counter }}{{endfor}}')" value="Delete"></td>
+                    </tr>
+
+                    {% endfor %}
+                </tbody>
+                
+                {% else %}
+                <tbody>
+
+                </tbody>
+                {% endif %}
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th name="txtTotalPrice" rowspan="3">Total Price :<span id="txtTotalPrice"></span></th>
+                        <th name="txtTotalQuantity" rowspan="4">Total Qty :<span id="txtTotalQuantity"></span></th>
+                        <th name="txtTotalAmount" rowspan="5">Total Amount :<span id="txtTotalAmount"></span></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+        <div class="container p-5 my-5   text-white">
+            <div class="row justify-content-between">
+                <div class="col-4">
+                    <textarea rows="4" cols="30" name="commentDescription"
+                        id="commentDescription"> {{order_list.product_desc}}</textarea>
+                </div>
+                <div class="col-4">
+                    {% if if_value %}
+                    <br>
+                    <button type="submit" class="btn btn-primary" id="btnSaveorder" name="btnSaveorder"
+                        value="SaveOrder">Update Order</button>
+                    {% else %}
+                    <br>
+                    <button type="submit" class="btn btn-success" id="btnSaveorder" name="btnSaveorder"
+                        value="SaveOrder">Save Order</button>
+                    {% endif %}
+
+                </div>
+                <div class="col-4 ">
+                    <h5 style="color:wheat"><ins><b>Total Amount</b></ins></h5>
+                    <input type="text" class="form-control" id="txtTotalAmt" name="txtTotalAmt" 
+                        value="{{order_list.total_amount}}" readonly> 
+                </div>
+            </div>
+
+        </div>
+
+        </div>
+
+
+
+    </form>
+
+
+
+
+
+    {% endblock %}

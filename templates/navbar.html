@@ -1,0 +1,70 @@
+{% load static %}
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar" class="pt-5">
+        <div class="sidebar-header pt-5">
+            <h3><i class="fas fa-tachometer-alt fa-fw me-3"></i><span>LINKS</span></h3>
+        </div>
+        
+
+        <ul class="list-unstyled components pt-5">
+            
+            
+            <li>
+                <a href="{% url 'create_order_details' %}"><i class="fas fa-globe fa-fw me-3"></i><span>Home</span></a>
+            </li>
+            
+            <li>
+                <a class="dropdown-btn"> <i class="fas fa-chart-area fa-fw me-3"></i><span>Masters Link</span></a>
+                <ul class="collapse list-unstyled">
+                    <li>
+                        <a href="{% url 'create_customer' %}">Customers</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'create_unit' %}">Unit</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'create_product' %}">Product Details</a>
+                    </li>
+                </ul>
+            </li>
+            
+            <li>
+                <a href="{% url 'order' %}"><i class="fas fa-chart-bar fa-fw me-3"></i><span>Order List</span></a>
+            </li>
+            
+        </ul>
+
+        
+    </nav>
+
+    <!-- Page Content  -->
+    <div id="content">
+ <nav class="navbar navbar-expand-lg navbar-custom fixed-top pb-2">
+            <div class="container-fluid">
+
+                <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                    <i class="fa fa-bars"></i>
+                    <span class="sr-only">Toggle Menu</span>
+                </button>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active"  style="color:white ;" aria-current="page" href="{% url 'create_order_details' %}">Home</a>
+                        </li>
+                      
+                        <li class="nav-item">
+                            <a class="nav-link"  style="color:white ;" href="{% url 'order' %}">Orders</a>
+                        </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+       

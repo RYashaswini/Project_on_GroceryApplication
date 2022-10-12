@@ -1,0 +1,24 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {% include 'header.html' %}
+</head>
+
+<body id="bodyId" onload="loaddate()">
+
+    {% include 'navbar.html'%}
+    
+    {% block content %}
+
+    {% endblock %}
+
+  
+
+</body>
+{% include 'scripts.html' %}
+
+</html>
